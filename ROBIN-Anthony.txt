@@ -1,0 +1,177 @@
+Exercice 1]
+
+1) /Contacts
+  Cette requête renvoie l'instance du tag "Contacts" présent à la
+  racine ainsi que tous ce qui est contenu dans cette instance.
+
+2) /Contacts/Person
+  Cette requête renvoie toutes les instances du tag "Person" contenue dans le
+  tag "Contacts" présent à la racine ainsi que tous ce qui est contenue dans
+  ces instances de "Person".
+
+3) //Person[Firstname='John']
+  Cette requête renvoie toutes les instances du tag "Person" contenant un tag
+  "Firstname" contenant le texte "John".
+
+4) //Person[Email]
+  Cette requête renvoie toutes les instances du tag "Person" contenant un tag
+  "Email".
+
+5) /Contacts/Person[1]/Firstname/child::text()
+  Cette requête renvoie le texte présent dans le tag "Firstname" présent dans
+  la première instance de tag "Person" présent dans le tag "Contacts" présent
+  à la racine.
+
+6) /Contacts/Person[1]/Firstname/text()
+  Les requête présentent en questions 5 et 6 sont exactement identiques :
+  child::D est équivalent à D.
+
+7) /Contacts//Address[@type='home']//Street/child::text()
+  Cette requête prends le tag "Contacts" présent à la racine. A partir de ce
+  nœud, prends toutes les instances de "Address" ayant la valeur "home"
+  associée à leur attribut "type" puis prends toutes les instances du tag
+  "Street" présent à partir de ces nœuds et renvoie le texte présent dans ces
+  tags.
+
+8) /Contacts//Address[@type='home' and City='London']
+  Cette requête prends le tag "Contacts" présent à la racine. A partir de ce
+  nœud, prends toutes les instances de "Address" ayant la valeur "home"
+  associée à leur attribut "type" ET ayant la valeur "London" associée à leur
+  attribut "City". Renvoie alors le contenu des tags "Address" restants.
+
+9) /Contacts//Address[@type='work' and City='Dublin']/parent::node()/Lastname/text()
+  Cette requête prends le tag "Contacts" présent à la racine. A partie de ce
+  nœud, prends toutes les instances de "Address" ayant la valeur "work"
+  associée à leur attribut "type" ET ayant la valeur "Dublin" associée à leur
+  attribut "City". A partir de là, prends les nœuds parents et affiche le texte
+  présent dans un tag "Lastname".
+
+10) /Contacts//Address[@type="work" and City="Dublin"]/../Lastname/text()
+  Fait exactement la même chose que la requête en 9. En effet, .. est
+  équivalent à parent::node().
+
+11) /Contacts[.//Address[@type='work' and City='Dublin']]//Lastname/text()
+  Renvoie tous les textes présent dans les tags "Lastname" présent dans le tag
+  "Contacts" si celui-ci contient un tag "Address" ayant la valeur "work"
+  associée à son attribut "type" ET ayant la valeur "Dublin" associée à son
+  attribut "City".
+
+12) /Contacts//Address[@type='work']/ancestor::node()
+  Renvoie tous les ancêtres des tags "Address" ayant la valeur "work" associée
+  à l'attribut "type" présent dans le tag "Contacts" de la racine.
+
+13) /Contacts/Person[Lastname='Smith']/following-sibling::node()/Lastname/text()
+  Renvoie le texte des tags "Lastname" qui sont présent dans une instance de
+  même niveau suivante au tag "Person" contenant un tag "Lastname" valant
+  "Smith" présent dans le tag "Contacts" de la racine.
+
+14) /Contacts/Person[following-sibling::node()/Lastname='Dunne']/Lastname/text()
+Renvoie le texte des tags "Lastname" qui sont présent dans une instance de même
+niveau (présent dans un tag "Person" présent dans le tag "Contacts" de la
+racine) précédant un tag quelconque contenant un tag "Lastname" valant "Dunne".
+
+Exercice 2]
+
+1) Toutes les compositions.
+  //composition/text()
+
+2) Toutes les compositions ayant un soloist.
+  //soloist/parent::node()/composition/text()
+
+3) Toutes les performances avec un seul orchestra mais pas de soloist.
+  //performance[not(soloist) and count(orchestra)=1]
+
+4) Tous les soloists ayant joue avec le London Symphony Orchestra sur un CD
+publié par Deutsche Grammophon.
+  //CD[publisher='Deutsche Grammophon']/performance[orchestra='London Symphony Orchestra']/soloist/text()
+
+5) Tous les CDs comportant des performances du London Symphony Orchestra.
+  //CD[.//orchestra='London Symphony Orchestra']
+
+Exercice 3]
+
+1) Le titre du cinquième livre dans la liste.
+  /booker/award[5]/title/text()
+
+2) L’auteur du sixième livre dans la liste.
+  /booker/award[6]/author/text()
+
+3) Le titre du livre qui a gagné en 2000.
+  //award[year='2000']/title/text()
+
+4) Le nom de l’auteur du livre intitulé Possession.
+  //award[title='Possession']/author/text()
+
+5) Le titre des livres dont J M Coetzee est l’auteur.
+  //award[author='J M Coetzee']/title/text()
+
+6) Le nom de tous les auteurs qui ont obtenu un prix depuis 1995.
+  //award[year>=1995]/author/text()
+
+7) Le nombre total de prix décernés.
+  count(//award)
+
+Exercice 4]
+
+1) Les ́éléments titres des recettes.
+  /cuisine/recette/titre/text()
+  /cuisine/recette/titre/text()
+
+2) Les noms des ingrédients.
+  /cuisine/recette/ingredients/ingredient/nom_ing/text()
+  /cuisine/ingredient/@nom
+
+3) L’élément titre de la deuxième recette.
+  /cuisine/recette[2]/titre/text()
+  /cuisine/recette[2]/titre/text()
+
+4) La dernière ́étape de chaque recette.
+  /cuisine/recette/texte/etape[last()]/text()
+  /cuisine/recette/texte/etape[last()]/text()
+
+5) Le nombre de recettes.
+  count(/cuisine/recette)
+  count(/cuisine/recette)
+
+6) Les éléments recette qui ont strictement moins de 7 ingrédients.
+  /cuisine/recette[count(child::ingredients/ingredient)<7]
+  /cuisine/recette[count(child::ingredients/ing-recette)<7]
+
+
+7) Les titres des recettes qui ont strictement moins de 7 ingrédients.
+  /cuisine/recette[count(child::ingredients/ingredient)<7]/titre/text()
+  /cuisine/recette[count(child::ingredients/ing-recette)<7]/titre/text()
+
+8) Les recettes qui utilisent de la farine.
+  /cuisine/recette[ingredients/ingredient/nom_ing='farine']/titre/text()
+  /cuisine/recette[ingredients/ing-recette[@ingredient='farine']]/titre/text()
+
+9) Les recettes de la catégorie entrée.
+  /cuisine/recette[categorie='Entrée']/titre/text()
+  /cuisine/recette[contains(@categ, 'entree')]/titre/text()
+
+Exercice 5]
+1) Le nombre de morceaux (tracks hors PlayLists) de la bibliothèque.
+  count(//key[.='Tracks']/following-sibling::*[1]/key)
+
+2) Tous les noms d’albums.
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1]/key[.='Album']/following-sibling::*[1]/text()
+
+3) Tous les genres de musique (Jazz, Rock, . . .)
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1]/key[.='Genre']/following-sibling::*[1]/text()
+
+4) Le nombre de morceaux de Jazz.
+  count(//key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1]/key[.='Genre']/following-sibling::*[1][.="Jazz"]/text())
+
+5) Tous les genres de musique mais en faisant en sorte de n’avoir dans le résultat qu’une seule occurrence de
+chaque genre.
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1]/key[.='Genre']/following-sibling::*[1][not(.=following::key[.='Genre']/following-sibling::*[1])]/text()
+
+6) Le titre (Name) des morceaux qui ont été écoutés au moins 1 fois.
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1][key[.='Play Count']/following-sibling::*[1]>0]/key[.='Name']/following-sibling::*[1]/text()
+
+7) Le titre des morceaux qui n’ont jamais été écoutés.
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1][not(key[.='Play Count'])]/key[.='Name']/following-sibling::*[1]/text()
+
+8) Le titre du (ou des) morceaux les plus anciens (renseignement Year) de la bibliothèque.
+  //key[.='Tracks']/following-sibling::*[1]/key/following-sibling::*[1][key[.='Year']/following-sibling::*[1][not(.>following::key[.='Year']/following-sibling::*[1]) and not(.>preceding::key[.='Year']/following-sibling::*[1])]]/key[.='Name']/following-sibling::*[1]/text()
